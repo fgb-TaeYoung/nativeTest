@@ -1,17 +1,16 @@
-import React from 'react';
 import Counter from './Counter';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View} from 'react-native';
 import PropTypes from 'prop-types';
 
 const CounterList = ({counter, handleAddCounter, handleRemoveCounter, handleIncrement, handleDecrement}) => {
     const counterModule = counter.map((item:object|null|undefined, index:number) => (
-            <Counter
-                key={index}
-                index={index}
-                value={item}
-                handleIncrement={handleIncrement}
-                handleDecrement={handleDecrement}
-            />
+        <Counter
+            key={index}
+            index={index}
+            value={item}
+            handleIncrement={handleIncrement}
+            handleDecrement={handleDecrement}
+        />
       ));
 
     return (

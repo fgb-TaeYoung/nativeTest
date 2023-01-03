@@ -1,26 +1,52 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
 
 const Counter = ({index, value, handleIncrement, handleDecrement}) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const fadeIn = () => {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 3000,
+        useNativeDriver: false
+      }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 5000,
+      useNativeDriver: false
+    }).start();
+  };
+
+  useEffect(()=>{
+    fadeIn();
+    return ()=>{fadeOut()};
+  },[]);
+
     return (
-      <View style={styles.counterContainer}>
-        <Text style={styles.counterInfo}>
-          Count: {value.counterNum}
-        </Text>
-        <View style={styles.counterBtnContainer}>
-          <TouchableOpacity
-              style={styles.counterButton}
-              onPress={() => handleIncrement(index)}>
-            <Text>INCREMENT</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-              style={styles.counterButton}
-              onPress={() => handleDecrement(index)}>
-            <Text>DECREMENT</Text>
-          </TouchableOpacity>
+      <Animated.View 
+              style={{opacity: fadeAnim}}>
+        <View style={styles.counterContainer}>
+          <Text style={styles.counterInfo}>
+            Count: {value.counterNum}
+          </Text>
+          <View style={styles.counterBtnContainer}>
+            <TouchableOpacity
+                style={styles.counterButton}
+                onPress={() => {handleIncrement(index);fadeIn();}}>
+              <Text>INCREMENT</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.counterButton}
+                onPress={() => handleDecrement(index)}>
+              <Text>DECREMENT</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </Animated.View>
     );
 };
 
